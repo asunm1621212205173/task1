@@ -1,0 +1,49 @@
+import random
+
+def hangman_game():
+    # List of words to choose from
+    word_list = ["python", "hangman", "programming", "challenge", "computer"]
+    selected_word = random.choice(word_list)  # Randomly select a word
+    guessed_word = ["_"] * len(selected_word)  # Placeholder for guessed letters
+    incorrect_guesses_allowed = 6  # Maximum incorrect guesses
+    incorrect_guesses = 0  # Counter for incorrect guesses
+    guessed_letters = set()  # Keep track of guessed letters
+
+    print("Welcome to Hangman!")
+    print("Word to guess: " + " ".join(guessed_word))
+    print(f"You have {incorrect_guesses_allowed} incorrect guesses allowed.\n")
+
+    while incorrect_guesses < incorrect_guesses_allowed:
+        guess = input("Enter a letter: ").lower()
+
+        # Validate input
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter a single valid letter.\n")
+            continue
+        if guess in guessed_letters:
+            print(f"You already guessed '{guess}'. Try again.\n")
+            continue
+
+        guessed_letters.add(guess)
+
+        if guess in selected_word:
+            print(f"Good guess! '{guess}' is in the word.\n")
+            for index, letter in enumerate(selected_word):
+                if letter == guess:
+                    guessed_word[index] = guess
+        else:
+            incorrect_guesses += 1
+            print(f"Wrong guess! '{guess}' is not in the word.")
+            print(f"Remaining incorrect guesses: {incorrect_guesses_allowed - incorrect_guesses}\n")
+
+        print("Word to guess: " + " ".join(guessed_word) + "\n")
+
+        if "_" not in guessed_word:
+            print("Congratulations! You guessed the word:", selected_word)
+            break
+    else:
+        print("Game Over! You've run out of guesses.")
+        print("The word was:", selected_word)
+
+# Run the game
+hangman_game()
